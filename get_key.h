@@ -1,6 +1,6 @@
-// GetKey.h
-#ifndef GETKEY_H
-#define GETKEY_H
+// get_key.h
+#ifndef GET_KEY_H
+#define GET_KEY_H
 
 #include <termios.h> 
 #include <unistd.h> 
@@ -20,4 +20,4 @@ char GetKey()
     return key;
 }
 
-#endif // GETKEY_H
+#endif // GET_KEY_H

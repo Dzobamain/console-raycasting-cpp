@@ -1,107 +1,47 @@
 // Console_Raycasting_cpp
 // Libraries
 #include <iostream>
-#include <cmath>
 // Header files
-#include "GetKey.h"
+#include "arena_and_player_info.h"
+#include "get_key.h"
+#include "print_arena.h"
+#include "player_movementYX.h"
+#include "cast_ray.h"
+#include "rotate_ray.h"
 // █, ▓, ▒, ░
-
-const int arenaHeightY = 8;
-const int arenaLengthX = 12;
-int arena[arenaHeightY][arenaLengthX] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
-
-int playerPositionY = 2;
-int playerPositionX = 2;
-int playerSpeed = 1;
-
-void PlayerMovement(char directionOfMovement, int movementSpeed);
-void PrintArena();
 
 int main()
 {
-    char playerDirection;
+    char directionOfRotateOrMovement;
+    int* rayHitDistances;
 
-    do
+    do 
     {
-        system("clear");
+        //system("clear");
+        rayHitDistances = CastRay();
         PrintArena();
         
-        playerDirection = GetKey();
-        PlayerMovement(playerDirection, playerSpeed);
-    } while (playerDirection != 'q' && playerDirection != 'Q');
-}
+        directionOfRotateOrMovement = GetKey();
 
-void PlayerMovement(char directionOfMovement, int movementSpeed)
-{
-    switch (directionOfMovement)
-    {
-    case 'w': // Рух в гору / Moving up
-    case 'W':
-        for (int i = 1; i <= movementSpeed; i++)
-        {
-            if (playerPositionY - 1 >= 0 && arena[playerPositionY - 1][playerPositionX] != 1)
-                playerPositionY--;
-            else
-                break;
-        }
-        break;
-    case 's': // Рух в низ /  Moving down
-    case 'S':
-        for (int i = 1; i <= movementSpeed; i++)
-        {
-            if (playerPositionY + 1 < arenaHeightY && arena[playerPositionY + 1][playerPositionX] != 1)
-                playerPositionY++;
-            else
-                break;
-        }
-        break;
-    case 'd': // рух в вправо / Moving right
-    case 'D':
-        for (int i = 1; i <= movementSpeed; i++)
-        {
-            if (playerPositionX + 1 < arenaLengthX && arena[playerPositionY][playerPositionX + 1] != 1)
-                playerPositionX++;
-            else
-                break;
-        }
-        break;
-    case 'a': // рух в вліво / Moving left
-    case 'A':
-        for (int i = 1; i <= movementSpeed; i++)
-        {
-            if (playerPositionX - 1 >= 0 && arena[playerPositionY][playerPositionX - 1] != 1)
-                playerPositionX--;
-            else
-                break;
-        }
-        break;
-    default:
-        //std::cout << "Unknown key sequence!" << std::endl;
-        break;
-    }
-}
+        // Рух гравця / Player movement
+        if (directionOfRotateOrMovement == 'w' || directionOfRotateOrMovement == 'W' || 
+            directionOfRotateOrMovement == 's' || directionOfRotateOrMovement == 'S' ||
+            directionOfRotateOrMovement == 'd' || directionOfRotateOrMovement == 'D' || 
+            directionOfRotateOrMovement == 'a' || directionOfRotateOrMovement == 'A')
+            PlayerMovementYX(directionOfRotateOrMovement);
 
-void PrintArena()
-{
-    for (int i = 0; i < arenaHeightY; i++)
-    {
-        for (int j = 0; j < arenaLengthX; j++)
+        // Поворот променя / Ray rotation
+        if (directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'r')
+            RotateRay(directionOfRotateOrMovement);
+
+        // Очищаємо арену від старих слідів луча
+        for (int y = 0; y < arenaHeightY; y++)
         {
-            if (i == playerPositionY && j == playerPositionX)
-                std::cout << "P ";
-            else if (arena[i][j] == 0)
-                std::cout << "  ";
-            else
-                std::cout << arena[i][j] << " ";
+            for (int x = 0; x < arenaLengthX; x++) 
+            {
+                if (arena[y][x] == 2)
+                    arena[y][x] = 0;
+            }
         }
-        std::cout << std::endl;
-    }
+    } while (directionOfRotateOrMovement != 'q' && directionOfRotateOrMovement != 'Q');
 }
