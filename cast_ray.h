@@ -7,7 +7,6 @@
 
 int* CastRay() 
 {
-    int numberRays = 3;
     int* rayHitDistances = new int[numberRays];
     float angleStep = fieldOfView / (numberRays - 1); // Розподіляємо кути для променів / Distribute angles for the rays
 
