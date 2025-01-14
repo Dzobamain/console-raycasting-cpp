@@ -8,8 +8,8 @@ void PlayerMovementYX(char directionOfMovement)
 {
     switch (directionOfMovement)
     {
-    case 'w': // Рух в гору / Moving up
-    case 'W':
+    case 'a': // Рух в гору / Moving up
+    case 'A':
         for (int i = 1; i <= playerSpeed; i++)
         {
             if (playerPositionY - 1 >= 0 && arena[playerPositionY - 1][playerPositionX] != 1)
@@ -18,8 +18,8 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 's': // Рух в низ /  Moving down
-    case 'S':
+    case 'd': // Рух в низ /  Moving down
+    case 'D':
         for (int i = 1; i <= playerSpeed; i++)
         {
             if (playerPositionY + 1 < arenaHeightY && arena[playerPositionY + 1][playerPositionX] != 1)
@@ -28,8 +28,8 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 'd': // рух в вправо / Moving right
-    case 'D':
+    case 'w': // рух в вправо / Moving right
+    case 'W':
         for (int i = 1; i <= playerSpeed; i++)
         {
             if (playerPositionX + 1 < arenaLengthX && arena[playerPositionY][playerPositionX + 1] != 1)
@@ -38,8 +38,8 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 'a': // рух в вліво / Moving left
-    case 'A':
+    case 's': // рух в вліво / Moving left
+    case 'S':
         for (int i = 1; i <= playerSpeed; i++)
         {
             if (playerPositionX - 1 >= 0 && arena[playerPositionY][playerPositionX - 1] != 1)

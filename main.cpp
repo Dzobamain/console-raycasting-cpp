@@ -1,7 +1,9 @@
 // Console_Raycasting_cpp
 // Libraries
 #include <iostream>
-#include <string.h>
+#include <string>
+#include <cmath> 
+#include <vector>
 // Header files
 #include "arena_and_player_info.h"
 #include "get_key.h"
@@ -11,16 +13,10 @@
 #include "rotate_ray.h"
 // █, ▓, ▒, ░
 
-int* GetTerminalSize();
+void DisplayPlayerView(int *rayHitDistances);
 
 int main()
 {
-    int *array = GetTerminalSize();
-    for (int i = 0; i < 2; i++)
-    {
-        std::cout << array[i] << " ";
-    }
-
     char directionOfRotateOrMovement;
     int *rayHitDistances;
 
@@ -28,7 +24,8 @@ int main()
     {
         system("clear");
         rayHitDistances = CastRay();
-        // PrintArena();
+        DisplayPlayerView(rayHitDistances);
+        PrintArena();
 
         directionOfRotateOrMovement = GetKey();
 
@@ -40,7 +37,8 @@ int main()
             PlayerMovementYX(directionOfRotateOrMovement);
 
         // Поворот променя / Ray rotation
-        if (directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'r')
+        if (directionOfRotateOrMovement == 'q' || directionOfRotateOrMovement == 'Q' ||
+            directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'E')
             RotateRay(directionOfRotateOrMovement);
         for (int y = 0; y < arenaHeightY; y++)
         {
@@ -50,5 +48,44 @@ int main()
                     arena[y][x] = 0;
             }
         }
-    } while (directionOfRotateOrMovement != 'q' && directionOfRotateOrMovement != 'Q');
+    } while (directionOfRotateOrMovement != '1');
+    system("clear");
 }
+
+void DisplayPlayerView(int *rayHitDistances)
+{
+    // Графіка / Graphics
+    const int numberGraphics = 5;
+    std::string graphics[numberGraphics] = {"█", "▓", "▒", "░", "."};
+
+    // Обчислюємо кількість чисел, які відповідають кожному символу / Calculating the number of values corresponding to each symbol
+    int interval = maxRayDistance / numberGraphics; // Інтервал для кожного символу
+    int remainder = maxRayDistance % numberGraphics; // Залишок, щоб рівномірно розподілити символи
+
+    for (int y = 0; y < displayHeightY; y++) 
+    {
+        for (int x = 0; x < numberRays; x++) 
+        {
+            if (y < rayHitDistances[x]) // Потолок
+            {
+                std::cout << graphics[numberGraphics - 1];
+            }
+            else if (y > displayHeightY - 1 - rayHitDistances[x]) // Земля
+            {
+                std::cout << graphics[numberGraphics - 1];
+            }
+            else 
+            {
+                // Виводимо відповідний символ графіки
+                int graphicsIndex = rayHitDistances[x] / interval; // Визначаємо індекс графіки
+                if (graphicsIndex >= numberGraphics) 
+                    graphicsIndex = numberGraphics - 1; // Обмеження для верхнього символу
+                
+                std::cout << graphics[graphicsIndex];
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
+

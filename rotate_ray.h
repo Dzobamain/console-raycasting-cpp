@@ -6,9 +6,9 @@
 
 void RotateRay(char directionOfRotate) 
 {
-    if (directionOfRotate == 'e') 
+    if (directionOfRotate == 'q' || directionOfRotate == 'Q') 
         playerAngle -= 10.0f;  // Поворот на X градусов влево / Rotate X degrees to the left
-    else if (directionOfRotate == 'r')
+    else if (directionOfRotate == 'e' || directionOfRotate == 'E')
         playerAngle += 10.0f;  // Поворот на X градусов вправо / Rotate X degrees to the right
 
     // Логіка 0-360 градусів / Logic of 0-360 degrees

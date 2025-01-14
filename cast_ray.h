@@ -23,7 +23,7 @@ int* CastRay()
 
         for (int d = 0; d < maxRayDistance; d++)
         {
-            rayHitDistances[i] = d + 1;
+            rayHitDistances[i] = d;
 
             rayPositionY += rayStepPositionY;
             rayPositionX += rayStepPositionX;
