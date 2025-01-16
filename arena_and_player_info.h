@@ -97,12 +97,13 @@ int* GetTerminalSize() {
     return terminalSize;
 }
 
-
+#define PI 3.14159265358979323846
+#define to_radian(x) (x * PI / 180.0)
 int playerPositionY = 2;
 int playerPositionX = 2;
 int playerSpeed = 1;
 float fieldOfView = 90.0f; 
-float playerAngle = 0.0f; 
+float playerAngle = 0.0f; // TODO: чувак, используй радианы, а не градусы.
 int maxRayDistance = 10; 
 int numberRays = displaylLengthX;
 

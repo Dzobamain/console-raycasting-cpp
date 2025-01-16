@@ -1,151 +1,39 @@
-// player_movementYX.h
 #ifndef PLAYER_MOVEMENT_H
 #define PLAYER_MOVEMENT_H
 
 #include "arena_and_player_info.h"
 #include <cmath>
 
-void PlayerMovementYX(char directionOfMovement)
+bool tryMovePlayer(int& playerX, int& playerY, float angle) {
+    float rad = to_radian(angle); // Convert angle to radians
+
+    int startX = playerX + 0.5 + playerSpeed * cos(rad);
+    int startY = playerY + 0.5 + playerSpeed * sin(rad);
+    
+    if (arena[startY][startX] == 1) return false; 
+
+    playerX = startX;
+    playerY = startY;
+    return true;
+}
+
+
+void tryRotatePlayer(float directionOfRotate) 
 {
-    switch (directionOfMovement)
-    {
-    case 'w': // Рух в гору / Moving up
-    case 'W':
-        for (int i = 1; i <= playerSpeed; i++)
-        {
-            if (playerPositionY - 1 >= 0 && arena[playerPositionY - 1][playerPositionX] != 1)
-                playerPositionY--;
-            else
-                break;
-        }
-        break;
-    case 's': // Рух в низ /  Moving down
-    case 'S':
-        for (int i = 1; i <= playerSpeed; i++)
-        {
-            if (playerPositionY + 1 < arenaHeightY && arena[playerPositionY + 1][playerPositionX] != 1)
-                playerPositionY++;
-            else
-                break;
-        }
-        break;
-    case 'd': // рух в вправо / Moving right
-    case 'D':
-        for (int i = 1; i <= playerSpeed; i++)
-        {
-            if (playerPositionX + 1 < arenaLengthX && arena[playerPositionY][playerPositionX + 1] != 1)
-                playerPositionX++;
-            else
-                break;
-        }
-        break;
-    case 'a': // рух в вліво / Moving left
-    case 'A':
-        for (int i = 1; i <= playerSpeed; i++)
-        {
-            if (playerPositionX - 1 >= 0 && arena[playerPositionY][playerPositionX - 1] != 1)
-                playerPositionX--;
-            else
-                break;
-        }
-        break;
-    default:
-        // std::cout << "Unknown key sequence!" << std::endl;
-        break;
+    playerAngle = (static_cast<int>(playerAngle + directionOfRotate) % 360 + 360) % 360;
+}
+
+void PlayerMovementFirstPerson(char directionOfMovement) {
+    float moveAngle = playerAngle; // Default to forward
+    switch (directionOfMovement) {
+        case 'w': case 'W': tryMovePlayer(playerPositionX, playerPositionY, moveAngle); break;                       // Forward
+        case 's': case 'S': moveAngle += 180; tryMovePlayer(playerPositionX, playerPositionY, moveAngle); break;     // Backward
+        case 'a': case 'A': moveAngle -= 90; tryMovePlayer(playerPositionX, playerPositionY, moveAngle); break;      // Left
+        case 'd': case 'D': moveAngle += 90; tryMovePlayer(playerPositionX, playerPositionY, moveAngle); break;      // Right
+        case 'q': case 'Q': tryRotatePlayer(-45.0f); break;
+        case 'e': case 'E': tryRotatePlayer(45.0f); break;
+        default: return; // Invalid input, no movement
     }
 }
 
-void PlayerMovementFirstPerson(char directionOfMovement)
-{
-    switch (directionOfMovement)
-    {
-    case 'w': // Рух вперед / Move Forward
-    case 'W':
-    {
-        double rad = playerAngle * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
-
-        double startPositionY = playerPositionY + 0.5;
-        double startPositionX = playerPositionX + 0.5;
-
-        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
-        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
-
-        startPositionY += playerStepPositionY;
-        startPositionX += playerStepPositionX;
-
-        if (arena[(int)startPositionY][(int)startPositionX] == 1)
-            break;
-        
-        playerPositionY = (int)startPositionY;
-        playerPositionX = (int)startPositionX;
-        break;
-    }
-    case 's':
-    case 'S':
-    {
-        double rad = playerAngle * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
-
-        double startPositionY = playerPositionY + 0.5;
-        double startPositionX = playerPositionX + 0.5;
-
-        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
-        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
-
-        startPositionY -= playerStepPositionY;
-        startPositionX -= playerStepPositionX;
-
-        if (arena[(int)startPositionY][(int)startPositionX] == 1)
-            break;
-        
-        playerPositionY = (int)startPositionY;
-        playerPositionX = (int)startPositionX;
-        break;
-    }
-    case 'a':
-    case 'A':
-    {
-        double rad = (playerAngle + 90) * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
-
-        double startPositionY = playerPositionY + 0.5;
-        double startPositionX = playerPositionX + 0.5;
-
-        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
-        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
-
-        startPositionY -= playerStepPositionY;
-        startPositionX -= playerStepPositionX;
-
-        if (arena[(int)startPositionY][(int)startPositionX] == 1)
-            break;
-        
-        playerPositionY = (int)startPositionY;
-        playerPositionX = (int)startPositionX;
-        break;
-    }
-    case 'd':
-    case 'D':
-    {
-        double rad = (playerAngle - 90) * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
-
-        double startPositionY = playerPositionY + 0.5;
-        double startPositionX = playerPositionX + 0.5;
-
-        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
-        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
-
-        startPositionY -= playerStepPositionY;
-        startPositionX -= playerStepPositionX;
-
-        if (arena[(int)startPositionY][(int)startPositionX] == 1)
-            break;
-        
-        playerPositionY = (int)startPositionY;
-        playerPositionX = (int)startPositionX;
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-#endif // PLAYER_MOVEMENTYX_H
+#endif 

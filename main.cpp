@@ -17,61 +17,40 @@
 #ifdef _WIN32
 #include <windows.h>
 extern HANDLE hConsole;
-#define PRINT_CHAR(x) fputs(x, stdout)
-#define CLEAR_SCREEN() std::cout<<"\033[H"  
+#define PRINT_CHAR(x) WriteFile(hConsole, x, 4, NULL, NULL)
 #else
 #include <unistd.h>
-#define PRINT_CHAR(x) fputs(x, stdout)
-#define CLEAR_SCREEN() std::cout<<"\033[H"  
+#define PRINT_CHAR(x) fputs(x, stdout) // TODO: Use something faster. 
 #endif
+#define CLEAR_SCREEN() std::cout<<"\033[H"  
+#define HIDE_CURSOR() std::cout<<"\033[?25l"
+#define SHOW_CURSOR() std::cout<<"\033[?25h"
+
 
 void DisplayPlayerView(int *rayHitDistances);
 
 const int numberGraphics = 5;
-const char* graphics[numberGraphics] = {"█", "▌","▒", "░", "."};
+constexpr const char* graphics[numberGraphics] = {"█", "▌", "▒", "░", ".\0\0"};
 int interval = maxRayDistance / numberGraphics; 
-int remder = maxRayDistance % numberGraphics; 
-
+int remder = maxRayDistance % numberGraphics;
 
 int main()
 {   
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     #endif
-    std::cout<<"\033[?25l";
+    HIDE_CURSOR();
     char directionOfRotateOrMovement;
     int *rayHitDistances;
 
     do
     {  
-        
         CLEAR_SCREEN();  
-        
-        
         rayHitDistances = CastRay();
         DisplayPlayerView(rayHitDistances);
-        
-        
         PrintArena();
-
-        
         directionOfRotateOrMovement = GetKey();
-
-        
-        if (directionOfRotateOrMovement == 'w' || directionOfRotateOrMovement == 'W' ||
-            directionOfRotateOrMovement == 's' || directionOfRotateOrMovement == 'S' ||
-            directionOfRotateOrMovement == 'd' || directionOfRotateOrMovement == 'D' ||
-            directionOfRotateOrMovement == 'a' || directionOfRotateOrMovement == 'A')
-        {
-            PlayerMovementFirstPerson(directionOfRotateOrMovement);
-            //PlayerMovementYX(directionOfRotateOrMovement);
-        }
-
-        
-        if (directionOfRotateOrMovement == 'q' || directionOfRotateOrMovement == 'Q' ||
-            directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'E')
-            RotateRay(directionOfRotateOrMovement);
-
+        PlayerMovementFirstPerson(directionOfRotateOrMovement);
         for (int y = 0; y < arenaHeightY; y++)
         {
             for (int x = 0; x < arenaLengthX; x++)
@@ -81,6 +60,9 @@ int main()
             }
         }
     } while (directionOfRotateOrMovement != '1');
+
+    SHOW_CURSOR();
+    return 0;
 }
 
 void DisplayPlayerView(int *rayHitDistances)
@@ -89,17 +71,11 @@ void DisplayPlayerView(int *rayHitDistances)
     {
         for (int x = 0; x < numberRays; x++)
         {
-            if (y < rayHitDistances[x] || y > displayHeightY - 1 - rayHitDistances[x]) 
-            {
-                PRINT_CHAR(graphics[numberGraphics - 1]);
-            }
+            if (y < rayHitDistances[x] || y > displayHeightY - 1 - rayHitDistances[x]) { PRINT_CHAR(graphics[numberGraphics - 1]); }
             else
             {
-                
                 int graphicsIndex = rayHitDistances[x] / interval; 
-                if (graphicsIndex >= numberGraphics) 
-                    graphicsIndex = numberGraphics - 1; 
-
+                if (graphicsIndex >= numberGraphics) graphicsIndex = numberGraphics - 1;
                 PRINT_CHAR(graphics[graphicsIndex]);
             }
         }

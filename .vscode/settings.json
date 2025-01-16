@@ -70,6 +70,10 @@
         "numbers": "cpp",
         "span": "cpp",
         "text_encoding": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "iomanip": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     }
 }
