@@ -1,8 +1,9 @@
-
-#ifndef PRINT_ARENA_H
-#define PRINT_ARENA_H
+// arena_lib.h
+#ifndef ARENA_LIB_H
+#define ARENA_LIB_H
 
 #include "arena_and_player_info.h"
+#include <iostream>
 
 void PrintArena() 
 {
@@ -23,4 +24,4 @@ void PrintArena()
     }
 }
 
-#endif 
+#endif // ARENA_LIB_H
