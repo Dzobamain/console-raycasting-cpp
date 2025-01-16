@@ -1,4 +1,4 @@
-// rotate_ray.h
+
 #ifndef ROTATE_RAY_H
 #define ROTATE_RAY_H
 
@@ -7,13 +7,13 @@
 void RotateRay(char directionOfRotate) 
 {
     if (directionOfRotate == 'q' || directionOfRotate == 'Q') 
-        playerAngle -= 10.0f;  // Поворот на X градусов влево / Rotate X degrees to the left
+        playerAngle -= 10.0f;  
     else if (directionOfRotate == 'e' || directionOfRotate == 'E')
-        playerAngle += 10.0f;  // Поворот на X градусов вправо / Rotate X degrees to the right
+        playerAngle += 10.0f;  
 
-    // Логіка 0-360 градусів / Logic of 0-360 degrees
+    
     if (playerAngle >= 360.0f) playerAngle -= 360.0f;
     if (playerAngle < 0.0f) playerAngle += 360.0f;
 }
 
-#endif // ROTATE_RAY_H
+#endif 

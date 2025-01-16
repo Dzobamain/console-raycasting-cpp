@@ -1,4 +1,4 @@
-// player_movementYX.h
+
 #ifndef PLAYER_MOVEMENTYX_H
 #define PLAYER_MOVEMENTYX_H
 
@@ -8,7 +8,7 @@ void PlayerMovementYX(char directionOfMovement)
 {
     switch (directionOfMovement)
     {
-    case 'a': // Рух в гору / Moving up
+    case 'a': 
     case 'A':
         for (int i = 1; i <= playerSpeed; i++)
         {
@@ -18,7 +18,7 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 'd': // Рух в низ /  Moving down
+    case 'd': 
     case 'D':
         for (int i = 1; i <= playerSpeed; i++)
         {
@@ -28,7 +28,7 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 'w': // рух в вправо / Moving right
+    case 'w': 
     case 'W':
         for (int i = 1; i <= playerSpeed; i++)
         {
@@ -38,7 +38,7 @@ void PlayerMovementYX(char directionOfMovement)
                 break;
         }
         break;
-    case 's': // рух в вліво / Moving left
+    case 's': 
     case 'S':
         for (int i = 1; i <= playerSpeed; i++)
         {
@@ -49,9 +49,9 @@ void PlayerMovementYX(char directionOfMovement)
         }
         break;
     default:
-        //std::cout << "Unknown key sequence!" << std::endl;
+        
         break;
     }
 }
 
-#endif // PLAYER_MOVEMENTYX_H
+#endif 

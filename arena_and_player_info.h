@@ -1,15 +1,24 @@
-// arena_and_player_info.h
+
 #ifndef ARENA_AND_PLAYER_INFO_H
 #define ARENA_AND_PLAYER_INFO_H
 
-#include <errno.h> // errno
-#include <fcntl.h> // open(), O_EVTONLY, O_NONBLOCK
-#include <unistd.h> // close()
-#include <sys/ioctl.h> // ioctl()
+#include <iostream>
+#include <string>
 
-// Арена / Arena
-const int arenaHeightY = 20;
-const int arenaLengthX = 20;
+
+#ifdef _WIN32
+#include <windows.h>  
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+#else
+#include <errno.h>    
+#include <fcntl.h>    
+#include <unistd.h>   
+#include <sys/ioctl.h> 
+#endif
+
+
+constexpr int arenaHeightY = 20;
+constexpr int arenaLengthX = 20;
 int arena[arenaHeightY][arenaLengthX] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -27,20 +36,44 @@ int arena[arenaHeightY][arenaLengthX] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
 
-// Дисплей / Display
-const int displayHeightY = 24;
-const int displaylLengthX = 80;
+constexpr int displayHeightY = 24;
+constexpr int displaylLengthX = 80;
 char display[displayHeightY][displaylLengthX];
 
-int* GetTerminalSize() // Взято з / Take from https://github.com/sindresorhus/macos-terminal-size
-{
+
+int* GetTerminalSize() {
+    int* terminalSize = new int[2];
+
+#ifdef _WIN32
+
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (hConsole == INVALID_HANDLE_VALUE) {
+        std::cerr << "Error: Unable to get console handle." << std::endl;
+        return nullptr;
+    }
+
+    if (!GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+        std::cerr << "Error: Unable to get console screen buffer info." << std::endl;
+        return nullptr;
+    }
+    
+    SetConsoleMode(hConsole, ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    SetConsoleOutputCP(CP_UTF8);
+
+    #ifdef _DEBUG
+    terminalSize[0] = 1000;
+    terminalSize[1] = 1000;
+    #else
+    terminalSize[0] = csbi.srWindow.Right - csbi.srWindow.Left + 1; 
+    terminalSize[1] = csbi.srWindow.Bottom - csbi.srWindow.Top + 1; 
+    #endif
+
+#else
+    
     int tty_fd = open("/dev/tty", O_EVTONLY | O_NONBLOCK);
     if (tty_fd == -1) {
         std::cerr << "Opening `/dev/tty` failed (" << errno << "): " << strerror(errno) << std::endl;
@@ -56,20 +89,20 @@ int* GetTerminalSize() // Взято з / Take from https://github.com/sindresor
         return nullptr;
     }
 
-    int* displaylLengthYAnddisplayHeightX = new int[2];
-    displaylLengthYAnddisplayHeightX[0] = ws.ws_col;
-    displaylLengthYAnddisplayHeightX[1] = ws.ws_row;
+    terminalSize[0] = ws.ws_col; 
+    terminalSize[1] = ws.ws_row; 
+#endif
 
-    return displaylLengthYAnddisplayHeightX;
+    return terminalSize;
 }
 
-// Гравець / Player
+
 int playerPositionY = 2;
 int playerPositionX = 2;
 int playerSpeed = 1;
-float fieldOfView = 90.0f; // Поле зору / Field of view
-float playerAngle = 0.0f; // Початковий градус в яку дивиться гравець / Initial angle the player is facing
-int maxRayDistance = 10; // Дальність зору / View distance
+float fieldOfView = 90.0f; 
+float playerAngle = 0.0f; 
+int maxRayDistance = 10; 
 int numberRays = displaylLengthX;
 
-#endif // ARENA_AND_PLAYER_INFO_H
+#endif 

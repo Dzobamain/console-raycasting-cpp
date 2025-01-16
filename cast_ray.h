@@ -1,4 +1,4 @@
-// cast_ray.h
+
 #ifndef CASH_RAY_H
 #define CASH_RAY_H
 
@@ -8,20 +8,20 @@
 int* CastRay() 
 {
     int* rayHitDistances = new int[numberRays];
-    float angleStep = fieldOfView / (numberRays - 1); // Розподіляємо кути для променів / Distribute angles for the rays
+    float angleStep = fieldOfView / (numberRays - 1); 
 
-    for (int i = 0; i < numberRays; i++) 
+    for (int i{0}; i < numberRays; i++) 
     {
-        float currentAngle = playerAngle - 45.0f + (i * angleStep); // Кут для поточного променя / Angle for the current ray
-        double rad = currentAngle * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
+        float currentAngle = playerAngle - 45.0f + (i * angleStep); 
+        double rad = currentAngle * 3.14159265358979323846 / 180.0; 
 
         double rayPositionY = playerPositionY + 0.5;
         double rayPositionX = playerPositionX + 0.5;
 
-        double rayStepPositionY = sin(rad); // Крок луча по Y / Ray step along Y
-        double rayStepPositionX = cos(rad); // Крок луча по X / Ray step along X
+        double rayStepPositionY = sin(rad); 
+        double rayStepPositionX = cos(rad); 
 
-        for (int d = 0; d < maxRayDistance; d++)
+        for (int d{0}; d < maxRayDistance; d++)
         {
             rayHitDistances[i] = d;
 
@@ -37,11 +37,11 @@ int* CastRay()
             if (arena[checkY][checkX] == 1) 
                 break;
             
-            arena[checkY][checkX] = 2; // Позначити місце луча / Mark the ray's position
+            arena[checkY][checkX] = 2; 
         }
     }
 
     return rayHitDistances;
 }
 
-#endif // CASH_RAY_H
+#endif 

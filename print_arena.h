@@ -1,4 +1,4 @@
-// print_arena.h
+
 #ifndef PRINT_ARENA_H
 #define PRINT_ARENA_H
 
@@ -23,4 +23,4 @@ void PrintArena()
     }
 }
 
-#endif // PRINT_ARENA_H
+#endif 
