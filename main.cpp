@@ -2,16 +2,12 @@
 // Libraries
 #include <iostream>
 #include <string>
-#include <cmath> 
 #include <vector>
-// Header files
 #include "arena_and_player_info.h"
 #include "get_key.h"
-#include "print_arena.h"
-#include "player_movementYX.h"
-#include "cast_ray.h"
-#include "rotate_ray.h"
-// █, ▓, ▒, ░
+#include "arena_lib.h"
+#include "player_lib.h"
+#include "ray_lib.h"
 
 void DisplayPlayerView(int *rayHitDistances);
 
@@ -22,7 +18,6 @@ int main()
 
     do
     {
-        system("clear");
         rayHitDistances = CastRay();
         DisplayPlayerView(rayHitDistances);
         PrintArena();
@@ -40,6 +35,7 @@ int main()
         if (directionOfRotateOrMovement == 'q' || directionOfRotateOrMovement == 'Q' ||
             directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'E')
             RotateRay(directionOfRotateOrMovement);
+        
         for (int y = 0; y < arenaHeightY; y++)
         {
             for (int x = 0; x < arenaLengthX; x++)
@@ -49,7 +45,6 @@ int main()
             }
         }
     } while (directionOfRotateOrMovement != '1');
-    system("clear");
 }
 
 void DisplayPlayerView(int *rayHitDistances)

@@ -1,9 +1,22 @@
-// cast_ray.h
-#ifndef CASH_RAY_H
-#define CASH_RAY_H
+// ray_lib.h
+#ifndef RAY_LIB_H
+#define RAY_LIB_H
 
 #include "arena_and_player_info.h"
 #include <cmath>
+
+void RotateRay(char directionOfRotate) 
+{
+    if (directionOfRotate == 'q' || directionOfRotate == 'Q') 
+        playerAngle -= 10.0f;  // Поворот на X градусов влево / Rotate X degrees to the left
+    else if (directionOfRotate == 'e' || directionOfRotate == 'E')
+        playerAngle += 10.0f;  // Поворот на X градусов вправо / Rotate X degrees to the right
+
+    // Логіка 0-360 градусів / Logic of 0-360 degrees
+    if (playerAngle >= 360.0f) playerAngle -= 360.0f;
+    if (playerAngle < 0.0f) playerAngle += 360.0f;
+}
+
 
 int* CastRay() 
 {
@@ -44,4 +57,4 @@ int* CastRay()
     return rayHitDistances;
 }
 
-#endif // CASH_RAY_H
+#endif // RAY_LIB_H

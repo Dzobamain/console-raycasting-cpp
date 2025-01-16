@@ -2,10 +2,10 @@
 #ifndef GET_KEY_H
 #define GET_KEY_H
 
-#include <termios.h> 
-#include <unistd.h> 
+// for macOS
+#include <termios.h>
+#include <unistd.h>
 #include <cstdio>
-
 
 char GetKey()
 {
