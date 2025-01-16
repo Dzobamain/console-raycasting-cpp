@@ -9,8 +9,6 @@
 
 #include "arena_and_player_info.h"
 #include "get_key.h"
-#include "player_movementYX.h"
-#include "rotate_ray.h"
 #include "arena_lib.h"
 #include "ray_lib.h"
 #include "player_lib.h"
