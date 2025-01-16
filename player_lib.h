@@ -3,6 +3,7 @@
 #define PLAYER_MOVEMENT_H
 
 #include "arena_and_player_info.h"
+#include <cmath>
 
 void PlayerMovementYX(char directionOfMovement)
 {
@@ -49,7 +50,100 @@ void PlayerMovementYX(char directionOfMovement)
         }
         break;
     default:
-        //std::cout << "Unknown key sequence!" << std::endl;
+        // std::cout << "Unknown key sequence!" << std::endl;
+        break;
+    }
+}
+
+void PlayerMovementFirstPerson(char directionOfMovement)
+{
+    switch (directionOfMovement)
+    {
+    case 'w': // Рух вперед / Move Forward
+    case 'W':
+    {
+        double rad = playerAngle * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
+
+        double startPositionY = playerPositionY + 0.5;
+        double startPositionX = playerPositionX + 0.5;
+
+        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
+        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
+
+        startPositionY += playerStepPositionY;
+        startPositionX += playerStepPositionX;
+
+        if (arena[(int)startPositionY][(int)startPositionX] == 1)
+            break;
+        
+        playerPositionY = (int)startPositionY;
+        playerPositionX = (int)startPositionX;
+        break;
+    }
+    case 's':
+    case 'S':
+    {
+        double rad = playerAngle * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
+
+        double startPositionY = playerPositionY + 0.5;
+        double startPositionX = playerPositionX + 0.5;
+
+        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
+        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
+
+        startPositionY -= playerStepPositionY;
+        startPositionX -= playerStepPositionX;
+
+        if (arena[(int)startPositionY][(int)startPositionX] == 1)
+            break;
+        
+        playerPositionY = (int)startPositionY;
+        playerPositionX = (int)startPositionX;
+        break;
+    }
+    case 'a':
+    case 'A':
+    {
+        double rad = (playerAngle + 90) * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
+
+        double startPositionY = playerPositionY + 0.5;
+        double startPositionX = playerPositionX + 0.5;
+
+        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
+        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
+
+        startPositionY -= playerStepPositionY;
+        startPositionX -= playerStepPositionX;
+
+        if (arena[(int)startPositionY][(int)startPositionX] == 1)
+            break;
+        
+        playerPositionY = (int)startPositionY;
+        playerPositionX = (int)startPositionX;
+        break;
+    }
+    case 'd':
+    case 'D':
+    {
+        double rad = (playerAngle - 90) * M_PI / 180.0; // Переводимо кут в радіани / Convert the angle to radians
+
+        double startPositionY = playerPositionY + 0.5;
+        double startPositionX = playerPositionX + 0.5;
+
+        double playerStepPositionY = sin(rad); // Крок гравця по Y / Player step along Y
+        double playerStepPositionX = cos(rad); // Крок гравця по X / Player step along X
+
+        startPositionY -= playerStepPositionY;
+        startPositionX -= playerStepPositionX;
+
+        if (arena[(int)startPositionY][(int)startPositionX] == 1)
+            break;
+        
+        playerPositionY = (int)startPositionY;
+        playerPositionX = (int)startPositionX;
+        break;
+    }
+    default:
         break;
     }
 }

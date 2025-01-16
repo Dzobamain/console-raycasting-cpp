@@ -9,6 +9,9 @@
 #include "player_lib.h"
 #include "ray_lib.h"
 
+#include <thread>
+#include <chrono>
+
 void DisplayPlayerView(int *rayHitDistances);
 
 int main()
@@ -29,13 +32,16 @@ int main()
             directionOfRotateOrMovement == 's' || directionOfRotateOrMovement == 'S' ||
             directionOfRotateOrMovement == 'd' || directionOfRotateOrMovement == 'D' ||
             directionOfRotateOrMovement == 'a' || directionOfRotateOrMovement == 'A')
-            PlayerMovementYX(directionOfRotateOrMovement);
+        {
+            PlayerMovementFirstPerson(directionOfRotateOrMovement);
+            //PlayerMovementYX(directionOfRotateOrMovement);
+        }
 
         // Поворот променя / Ray rotation
         if (directionOfRotateOrMovement == 'q' || directionOfRotateOrMovement == 'Q' ||
             directionOfRotateOrMovement == 'e' || directionOfRotateOrMovement == 'E')
             RotateRay(directionOfRotateOrMovement);
-        
+
         for (int y = 0; y < arenaHeightY; y++)
         {
             for (int x = 0; x < arenaLengthX; x++)
@@ -44,6 +50,7 @@ int main()
                     arena[y][x] = 0;
             }
         }
+        system("clear");
     } while (directionOfRotateOrMovement != '1');
 }
 
@@ -54,12 +61,12 @@ void DisplayPlayerView(int *rayHitDistances)
     std::string graphics[numberGraphics] = {"█", "▓", "▒", "░", "."};
 
     // Обчислюємо кількість чисел, які відповідають кожному символу / Calculating the number of values corresponding to each symbol
-    int interval = maxRayDistance / numberGraphics; // Інтервал для кожного символу
+    int interval = maxRayDistance / numberGraphics;  // Інтервал для кожного символу
     int remainder = maxRayDistance % numberGraphics; // Залишок, щоб рівномірно розподілити символи
 
-    for (int y = 0; y < displayHeightY; y++) 
+    for (int y = 0; y < displayHeightY; y++)
     {
-        for (int x = 0; x < numberRays; x++) 
+        for (int x = 0; x < numberRays; x++)
         {
             if (y < rayHitDistances[x]) // Потолок
             {
@@ -69,18 +76,16 @@ void DisplayPlayerView(int *rayHitDistances)
             {
                 std::cout << graphics[numberGraphics - 1];
             }
-            else 
+            else
             {
                 // Виводимо відповідний символ графіки
                 int graphicsIndex = rayHitDistances[x] / interval; // Визначаємо індекс графіки
-                if (graphicsIndex >= numberGraphics) 
+                if (graphicsIndex >= numberGraphics)
                     graphicsIndex = numberGraphics - 1; // Обмеження для верхнього символу
-                
+
                 std::cout << graphics[graphicsIndex];
             }
         }
         std::cout << std::endl;
     }
 }
-
-
