@@ -8,19 +8,19 @@
 #define d_currentAngle(pa,i, as) (pa - 45.0f + (i * as))
 
 int* CastRay() 
-{
+{   
     int* rayHitDistances = new int[numberRays];
     float angleStep = fieldOfView / (numberRays - 1); 
 
-    for (int i{0}; i < numberRays; i++) 
+    for (int i{0}; i < numberRays; ++i) 
     {
         float rad = to_radian(d_currentAngle(playerAngle, i, angleStep)); 
 
-        double rayPositionY = playerPositionY + 0.5;
-        double rayPositionX = playerPositionX + 0.5;
+        float rayPositionY = playerPositionY + 0.5;
+        float rayPositionX = playerPositionX + 0.5;
 
-        double rayStepPositionY = sin(rad); 
-        double rayStepPositionX = cos(rad); 
+        float rayStepPositionY = sin(rad); 
+        float rayStepPositionX = cos(rad); 
 
         for (int d{0}; d < maxRayDistance; d++)
         {
@@ -29,10 +29,10 @@ int* CastRay()
             rayPositionY += rayStepPositionY;
             rayPositionX += rayStepPositionX;
 
-            int checkY = (int)rayPositionY;
-            int checkX = (int)rayPositionX;
+            unsigned checkY = static_cast<unsigned>(rayPositionY);
+            unsigned checkX = static_cast<unsigned>(rayPositionX);
 
-            if (checkX < 0 || checkY < 0 || checkX >= arenaLengthX || checkY >= arenaHeightY)
+            if (checkX >= arenaLengthX || checkY >= arenaHeightY)
                 break;
 
             if (arena[checkY][checkX] == 1) 
@@ -41,7 +41,6 @@ int* CastRay()
             arena[checkY][checkX] = 2; // WTF
         }
     }
-
     return rayHitDistances;
 }
 

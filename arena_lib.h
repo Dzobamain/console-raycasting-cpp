@@ -11,14 +11,15 @@ void PrintArena()
     {
         for (int x = 0; x < arenaLengthX; x++) 
         {
-            if (arena[y][x] == 1)
-                std::cout << "1 ";
-            else if (y == playerPositionY && x == playerPositionX)
+            if (y == playerPositionY && x == playerPositionX)
                 std::cout << "P ";
-            else if (arena[y][x] == 2 && arena[y][x] != arena[playerPositionY][playerPositionX])
-                std::cout << ". "; 
-            else
+            else if (arena[y][x] == 0)
                 std::cout << "  ";
+            else if (arena[y][x] == 1)
+                std::cout << "1 ";
+            else 
+                std::cout << ". "; 
+
         }
         std::cout << std::endl;
     }

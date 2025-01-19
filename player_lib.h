@@ -6,11 +6,6 @@
 
 static char lastDirection = 0;
 
-bool isMovePossible(int x, int y)
-{
-    return (x >= 0 && y >= 0 && x < arenaLengthX && y < arenaHeightY && arena[y][x] != 1);
-}
-
 // Clear the saved path
 void clearPath(int **&playerPath, int &pathLength)
 {
@@ -26,8 +21,9 @@ void clearPath(int **&playerPath, int &pathLength)
     }
 }
 
-void movePlayerAlongPath(int &playerX, int &playerY, float angle, char directionOfMovement)
+void movePlayerAlongPath(int &playerX, int &playerY, int angle, char directionOfMovement)
 {
+    constexpr unsigned maxPathLength = arenaHeightY * arenaLengthX;
     static int **playerPath = nullptr;
     static int pathLength = 0;
 
@@ -42,34 +38,29 @@ void movePlayerAlongPath(int &playerX, int &playerY, float angle, char direction
     // New direction
     if (playerPath == nullptr)
     {
-        int maxPathLength = arenaHeightY * arenaLengthX;
         playerPath = new int *[maxPathLength];
-        int currentPathIndex = 0;
 
-        double currentY = playerY + 0.5;
-        double currentX = playerX + 0.5;
+        float currentY = playerY + 0.5;
+        float currentX = playerX + 0.5;
 
-        double stepY = sin(rad);
-        double stepX = cos(rad);
+        float stepY = sin(rad);
+        float stepX = cos(rad);
 
-        while (currentPathIndex < maxPathLength)
+        for (;pathLength < maxPathLength; ++pathLength)
         {
             currentY += stepY;
             currentX += stepX;
 
-            int gridY = static_cast<int>(currentY);
-            int gridX = static_cast<int>(currentX);
+            unsigned gridY = static_cast<unsigned>(currentY);
+            unsigned gridX = static_cast<unsigned>(currentX);
 
-            if (!isMovePossible(gridX, gridY))
+            if (arena[gridY][gridX] == 1)
                 break;
 
-            playerPath[currentPathIndex] = new int[2];
-            playerPath[currentPathIndex][0] = gridY;
-            playerPath[currentPathIndex][1] = gridX;
-            currentPathIndex++;
+            playerPath[pathLength] = new int[2];
+            playerPath[pathLength][0] = gridY;
+            playerPath[pathLength][1] = gridX;
         }
-
-        pathLength = currentPathIndex;
 
         if (pathLength == 0)
         {
@@ -98,49 +89,48 @@ void movePlayerAlongPath(int &playerX, int &playerY, float angle, char direction
     }
 }
 
-void tryRotatePlayer(float directionOfRotate, char directionOfMovement)
+
+
+void tryRotatePlayer(float directionOfRotate)
 {
-    playerAngle = (static_cast<int>(playerAngle + directionOfRotate) % 360 + 360) % 360;
-    lastDirection = directionOfMovement;
+    playerAngle = (int)(playerAngle+directionOfRotate) % 360;
 }
 
 void PlayerMovementFirstPerson(char directionOfMovement)
 {
-    float speedOfRotate = 10;
-    float moveAngle = playerAngle;
+    float speedOfRotate = 45; // Для себя, если забыла убрать - убери.
     switch (directionOfMovement)
     {
     case 'w':
     case 'W':
-        movePlayerAlongPath(playerPositionX, playerPositionY, moveAngle, directionOfMovement);
+        movePlayerAlongPath(playerPositionX, playerPositionY, playerAngle, directionOfMovement);
         // Forward
         break;
     case 's':
     case 'S':
-        moveAngle += 180;
-        movePlayerAlongPath(playerPositionX, playerPositionY, moveAngle, directionOfMovement);
+        movePlayerAlongPath(playerPositionX, playerPositionY, playerAngle + 180, directionOfMovement);
         // Backward
         break;
     case 'a':
     case 'A':
-        moveAngle -= 90;
-        movePlayerAlongPath(playerPositionX, playerPositionY, moveAngle, directionOfMovement);
+        movePlayerAlongPath(playerPositionX, playerPositionY, playerAngle - 90, directionOfMovement);
         // Left
         break;
     case 'd':
     case 'D':
-        moveAngle += 90;
-        movePlayerAlongPath(playerPositionX, playerPositionY, moveAngle, directionOfMovement);
+        movePlayerAlongPath(playerPositionX, playerPositionY, playerAngle + 90, directionOfMovement);
         // Right
         break;
     case 'q':
     case 'Q':
-        tryRotatePlayer(-speedOfRotate, directionOfMovement);
+        tryRotatePlayer(-speedOfRotate);
+        lastDirection = directionOfMovement;
         // Rotate Left
         break;
     case 'e':
     case 'E':
-        tryRotatePlayer(speedOfRotate, directionOfMovement);
+        tryRotatePlayer(speedOfRotate);
+        lastDirection = directionOfMovement;
         // Rotate Right
         break;
     default:

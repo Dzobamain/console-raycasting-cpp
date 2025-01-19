@@ -17,8 +17,8 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 
 
-constexpr int arenaHeightY = 20;
-constexpr int arenaLengthX = 20;
+constexpr unsigned arenaHeightY = 20;
+constexpr unsigned arenaLengthX = 20;
 int arena[arenaHeightY][arenaLengthX] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -41,12 +41,12 @@ int arena[arenaHeightY][arenaLengthX] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-constexpr int displayHeightY = 24;
-constexpr int displaylLengthX = 80;
-char display[displayHeightY][displaylLengthX];
+// constexpr int displayHeightY = 24;
+// constexpr int displaylLengthX = 80;
+// char display[displayHeightY][displaylLengthX];
 
 
-int* GetTerminalSize() {
+int* getTerminalSize() {
     int* terminalSize = new int[2];
 
 #ifdef _WIN32
@@ -69,8 +69,8 @@ int* GetTerminalSize() {
     terminalSize[0] = 1000;
     terminalSize[1] = 1000;
     #else
-    terminalSize[0] = csbi.srWindow.Right - csbi.srWindow.Left + 1; 
-    terminalSize[1] = csbi.srWindow.Bottom - csbi.srWindow.Top + 1; 
+    terminalSize[0] = (csbi.srWindow.Right - csbi.srWindow.Left) / 2; 
+    terminalSize[1] = (csbi.srWindow.Bottom - csbi.srWindow.Top) / 2; 
     #endif
 
 #else
@@ -90,8 +90,8 @@ int* GetTerminalSize() {
         return nullptr;
     }
 
-    terminalSize[0] = ws.ws_col; 
-    terminalSize[1] = ws.ws_row; 
+    terminalSize[0] = ws.ws_col / 2; 
+    terminalSize[1] = ws.ws_row / 2; 
 #endif
 
     return terminalSize;
@@ -105,6 +105,10 @@ int playerSpeed = 1;
 float fieldOfView = 90.0f; 
 float playerAngle = 0.0f; // TODO: чувак, используй радианы, а не градусы.
 int maxRayDistance = 10; 
+int* termsize = getTerminalSize();
+char* display = new char[(int)(termsize[0] * termsize[1])];
+int displayHeightY = termsize[1];
+int displaylLengthX = termsize[0];
 int numberRays = displaylLengthX;
 
 #endif 
