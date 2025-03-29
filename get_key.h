@@ -16,11 +16,13 @@
         constexpr int D = 0x44;
         constexpr int Q = 0x51;
         constexpr int E = 0x45;
+        constexpr int ONE = 0x31;
+
     }
 char GetKey()
 {
 #ifdef _WIN32
-// x-macros для клавиш
+// x-macros for keys
 #define KEY_LIST \
     X(W, 'w')    \
     X(S, 's')    \
@@ -28,13 +30,10 @@ char GetKey()
     X(D, 'd')    \
     X(Q, 'q')    \
     X(E, 'e')    \
+    X(ONE, '1')  \
 
 #define CHECK_KEY(x) (x & 0x8000)
 
-    
-
-
-    
     if (_kbhit()) {
         if (_getch()){
             #define X(key, value) if (CHECK_KEY(GetAsyncKeyState(KEYS::key))) return value;
@@ -48,7 +47,6 @@ char GetKey()
     struct termios oldt, newt;
     char key;
     
-    
     tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);
@@ -58,6 +56,7 @@ char GetKey()
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt); 
     switch (key)
     {
+        // English letters
         case 'w':
         case 'W':
         case 's':
@@ -70,6 +69,7 @@ char GetKey()
         case 'Q':
         case 'e':
         case 'E':
+        case '1':
         return key;
         default:
         return '\0';

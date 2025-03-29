@@ -4,21 +4,27 @@
 
 #include "arena_and_player_info.h"
 #include <iostream>
+#include <string>
 
 void PrintArena() 
 {
+    constexpr const char* TILE_EMPTY = "  ";  
+    constexpr const char* TILE_WALL = "# ";  
+    constexpr const char* TILE_PLAYER = "P ";  
+    constexpr const char* TILE_RAY = ". ";  
+
     for (int y = 0; y < arenaHeightY; y++) 
     {
         for (int x = 0; x < arenaLengthX; x++) 
         {
-            if (arena[y][x] == 1)
-                std::cout << "1 ";
-            else if (y == playerPositionY && x == playerPositionX)
-                std::cout << "P ";
-            else if (arena[y][x] == 2 && arena[y][x] != arena[playerPositionY][playerPositionX])
-                std::cout << ". "; 
-            else
-                std::cout << "  ";
+            if (arena[y][x] == 1) // Wall
+                std::cout << TILE_WALL;
+            else if (y == playerPositionY && x == playerPositionX) // Player
+                std::cout << TILE_PLAYER;
+            else if (arena[y][x] == 2 && arena[y][x] != arena[playerPositionY][playerPositionX]) // Ray
+                std::cout << TILE_RAY; 
+            else // Empty space
+                std::cout << TILE_EMPTY;
         }
         std::cout << std::endl;
     }
