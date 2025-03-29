@@ -41,10 +41,10 @@ int arena[arenaHeightY][arenaLengthX] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-constexpr int displayHeightY = 24;
-constexpr int displaylLengthX = 80;
-char display[displayHeightY][displaylLengthX];
 
+int* GetTerminalSize();
+int displayHeightY = GetTerminalSize()[1] - /* mini map */ arenaHeightY;
+int displayLengthX = GetTerminalSize()[0];
 
 int* GetTerminalSize() {
     int* terminalSize = new int[2];
@@ -103,8 +103,8 @@ int playerPositionY = 2;
 int playerPositionX = 2;
 int playerSpeed = 1;
 float fieldOfView = 90.0f; 
-float playerAngle = 0.0f; // TODO: чувак, используй радианы, а не градусы.
+float playerAngle = 0.0f;
 int maxRayDistance = 10; 
-int numberRays = displaylLengthX;
+int numberRays = displayLengthX;
 
 #endif 
