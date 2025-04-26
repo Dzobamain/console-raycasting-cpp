@@ -1,17 +1,17 @@
-// arena_lib.h
 #ifndef ARENA_LIB_H
 #define ARENA_LIB_H
 
-#include "arena_and_player_info.h"
 #include <iostream>
 #include <string>
 
+#include "arena_and_player_info.h"
+
 void PrintArena() 
 {
-    constexpr const char* TILE_EMPTY = "  ";  
-    constexpr const char* TILE_WALL = "# ";  
-    constexpr const char* TILE_PLAYER = "P ";  
-    constexpr const char* TILE_RAY = ". ";  
+    const char* TILE_EMPTY = "  ";  
+    const char* TILE_WALL = "# ";  
+    const char* TILE_PLAYER = "P ";  
+    const char* TILE_RAY = ". ";  
 
     for (int y = 0; y < arenaHeightY; y++) 
     {
@@ -30,4 +30,4 @@ void PrintArena()
     }
 }
 
-#endif // ARENA_LIB_H
+#endif

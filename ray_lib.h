@@ -12,7 +12,7 @@ int* CastRay()
     int* rayHitDistances = new int[numberRays];
     float angleStep = fieldOfView / (numberRays - 1); 
 
-    for (int i{0}; i < numberRays; i++) 
+    for (int i = 0; i < numberRays; i++) 
     {
         float rad = to_radian(d_currentAngle(playerAngle, i, angleStep)); 
 
@@ -22,7 +22,7 @@ int* CastRay()
         double rayStepPositionY = sin(rad); 
         double rayStepPositionX = cos(rad); 
 
-        for (int d{0}; d < maxRayDistance; d++)
+        for (int d = 0; d < maxRayDistance; d++)
         {
             rayHitDistances[i] = d;
 
@@ -38,7 +38,7 @@ int* CastRay()
             if (arena[checkY][checkX] == 1) 
                 break;
             
-            arena[checkY][checkX] = 2; // WTF
+            arena[checkY][checkX] = 2;
         }
     }
 

@@ -1,24 +1,23 @@
-
 #ifndef ARENA_AND_PLAYER_INFO_H
 #define ARENA_AND_PLAYER_INFO_H
 
 #include <iostream>
 #include <string>
 
-
 #ifdef _WIN32
 #include <windows.h>  
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 #else
 #include <errno.h>    
 #include <fcntl.h>    
 #include <unistd.h>   
 #include <sys/ioctl.h> 
+
 #endif
 
-
-constexpr int arenaHeightY = 20;
-constexpr int arenaLengthX = 20;
+const int arenaHeightY = 20;
+const int arenaLengthX = 20;
 int arena[arenaHeightY][arenaLengthX] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -43,8 +42,8 @@ int arena[arenaHeightY][arenaLengthX] = {
 
 
 int* GetTerminalSize();
-int displayHeightY = GetTerminalSize()[1] - /* mini map */ arenaHeightY;
-int displayLengthX = GetTerminalSize()[0];
+const int displayHeightY = GetTerminalSize()[1] - /* mini map */ arenaHeightY - /* input line */ 1;
+const int displayLengthX = GetTerminalSize()[0];
 
 int* GetTerminalSize() {
     int* terminalSize = new int[2];

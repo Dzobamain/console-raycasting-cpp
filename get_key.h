@@ -1,4 +1,3 @@
-
 #ifndef GET_KEY_H
 #define GET_KEY_H
 
@@ -9,16 +8,18 @@
 #include <unistd.h>   
 #include <cstdio>     
 #endif
-    namespace KEYS {
-        constexpr int W = 0x57;
-        constexpr int S = 0x53;
-        constexpr int A = 0x41;
-        constexpr int D = 0x44;
-        constexpr int Q = 0x51;
-        constexpr int E = 0x45;
-        constexpr int ONE = 0x31;
 
-    }
+namespace KEYS {
+    constexpr int W = 0x57;
+    constexpr int S = 0x53;
+    constexpr int A = 0x41;
+    constexpr int D = 0x44;
+    constexpr int Q = 0x51;
+    constexpr int E = 0x45;
+    constexpr int ONE = 0x31;
+
+}
+
 char GetKey()
 {
 #ifdef _WIN32
