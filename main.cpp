@@ -1,4 +1,9 @@
-// main.cpp
+/*
+console-raycasting-cpp
+
+main.cpp
+*/
+
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -11,20 +16,22 @@
 #include "ray_lib.h"
 #include "player_lib.h"
 
+void DisplayPlayerView(int *rayHitDistances);
+
 #ifdef _WIN32
 #include <windows.h>
 extern HANDLE hConsole;
 #define PRINT_CHAR(x) WriteFile(hConsole, x, 4, NULL, NULL)
+
 #else
 #include <unistd.h>
 #define PRINT_CHAR(x) fputs(x, stdout)
+
 #endif
+
 #define CLEAR_SCREEN() std::cout<<"\033[H"  
 #define HIDE_CURSOR() std::cout<<"\033[?25l"
 #define SHOW_CURSOR() std::cout<<"\033[?25h"
-
-
-void DisplayPlayerView(int *rayHitDistances);
 
 const int numberGraphics = 5;
 const char* graphics[numberGraphics] = {"█", "▌", "▒", "░", ".\0\0"};
@@ -35,7 +42,9 @@ int main()
 {   
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
+
     #endif
+    
     HIDE_CURSOR();
     char directionOfRotateOrMovement;
     int *rayHitDistances;

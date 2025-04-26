@@ -1,8 +1,15 @@
+/*
+All interactions with the player from a first-person perspective, such as movement.
+
+player_lib.h
+*/
+
 #ifndef PLAYER_MOVEMENT_H
 #define PLAYER_MOVEMENT_H
 
-#include "arena_and_player_info.h"
 #include <cmath>
+
+#include "arena_and_player_info.h"
 
 static char lastDirection = 0;
 

@@ -1,3 +1,8 @@
+/*
+Mini map
+
+arena_lib.h
+*/
 #ifndef ARENA_LIB_H
 #define ARENA_LIB_H
 

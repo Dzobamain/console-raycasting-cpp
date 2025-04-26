@@ -1,4 +1,6 @@
-// ray_lib.h
+/*
+ray_lib.h
+*/
 #ifndef RAY_LIB_H
 #define RAY_LIB_H
 

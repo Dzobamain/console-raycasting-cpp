@@ -1,3 +1,10 @@
+/*
+Creation of the arena and its levels
+Information about the player, the arena, and where to display it.
+
+arena_and_player_info.h
+*/
+
 #ifndef ARENA_AND_PLAYER_INFO_H
 #define ARENA_AND_PLAYER_INFO_H
 

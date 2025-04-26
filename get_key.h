@@ -1,3 +1,9 @@
+/*
+Working with keys, obtaining the necessary ones
+
+get_key.h
+*/
+
 #ifndef GET_KEY_H
 #define GET_KEY_H
 
